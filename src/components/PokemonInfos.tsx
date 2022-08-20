@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PokemonDetails } from "../types";
 
 import {
@@ -60,7 +60,7 @@ const PokemonInfos = () => {
       {pokemonDetails && (
         <>
           <Arrow dir='left'>
-            <a href={`${Number(pokemonDetails.id) - 1}`}> </a>
+            <Link to={`${Number(pokemonDetails.id) - 1}`}> </Link>
           </Arrow>
           <div /* style={{ position: "relative", zIndex: "3" }} */
             className='pokemon-infos-container'>
