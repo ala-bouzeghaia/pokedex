@@ -7,6 +7,7 @@ import { PokemonData, PokemonDetails } from "./types";
 import Navbar from "./components/Navbar";
 import PokemonList from "./components/PokemonList";
 import PokemonInfos from "./components/PokemonInfos";
+import Pokepoke from "./components/Poke";
 
 import "./App.css";
 import { theme } from "./theme";
@@ -49,8 +50,8 @@ function App() {
   }, [offset]);
 
   return (
-    <div className='App'>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <div className='App'>
         <Navbar />
         <Routes>
           <Route
@@ -67,9 +68,10 @@ function App() {
             }
           />
           <Route path=':name' element={<PokemonInfos />} />
+          {/*  <Pokepoke />*/}
         </Routes>
-      </ThemeProvider>
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 

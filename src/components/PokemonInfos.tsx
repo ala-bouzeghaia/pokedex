@@ -9,8 +9,11 @@ import {
   Bar,
   Arrow,
 } from "./styles/PokemonInfos.styled";
+import { theme } from "../theme";
 
-const getPokemonDetails = async (name: string): Promise<PokemonDetails> => {
+const getPokemonDetails = async (
+  name: string | undefined
+): Promise<PokemonDetails> => {
   const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
   const data = await res.data;
   //console.log("data", data);
@@ -33,32 +36,38 @@ const getFormatedId = (id: number) => {
 const PokemonInfos = () => {
   const params = useParams();
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails>();
+  // const [name, setName] = useState<string>();
 
   //console.log("params.id =", params.name);
   //getPokemonDetails(params.name).then((res) => console.log("data", res));
 
   useEffect(() => {
     params.name &&
-      getPokemonDetails(params.name).then((res) => setPokemonDetails(res));
-  }, [params.name]);
+      getPokemonDetails(params.name).then((res) => {
+        setPokemonDetails(res);
+        console.log("data", res);
+      });
+  }, []);
 
   return (
     <StyledPokemonInfos
-      type={`${pokemonDetails?.types[0].type.name}`}
+      pokemonType={
+        pokemonDetails ? `${pokemonDetails?.types[0].type.name}` : ""
+      }
+      /* type={`${pokemonD?.types[0].type.name}`} */
       /*style={{
         position: "relative",
         maxWidth: "800px",
         margin: "0 auto",
       }} */
     >
-      <Arrow dir='left'>
-        <a href={`${Number(pokemonDetails?.id) - 1}`}> </a>
-      </Arrow>
-
-      <div /* style={{ position: "relative", zIndex: "3" }} */
-        className='pokemon-infos-container'>
-        {pokemonDetails && (
-          <>
+      {pokemonDetails && (
+        <>
+          <Arrow dir='left'>
+            <a href={`${Number(pokemonDetails.id) - 1}`}> </a>
+          </Arrow>
+          <div /* style={{ position: "relative", zIndex: "3" }} */
+            className='pokemon-infos-container'>
             <NumberId>{getFormatedId(pokemonDetails.id)}</NumberId>
             <div className='title-container'>
               <div className='title'>
@@ -110,14 +119,13 @@ const PokemonInfos = () => {
                 ))}
               </div>
             </div>
-          </>
-        )}
-      </div>
-
-      <Arrow dir='right'>
-        {" "}
-        <a href={`${Number(pokemonDetails?.id) + 1}`}> </a>
-      </Arrow>
+          </div>
+          <Arrow dir='right'>
+            {" "}
+            <a href={`${Number(pokemonDetails.id) + 1}`}> </a>
+          </Arrow>
+        </>
+      )}
     </StyledPokemonInfos>
   );
 };

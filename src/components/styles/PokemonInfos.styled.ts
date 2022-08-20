@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-type Props = { type: string };
+type Props = { pokemonType: string };
 
 export const StyledPokemonInfos = styled.div<Props>`
   display: flex;
@@ -13,11 +13,11 @@ export const StyledPokemonInfos = styled.div<Props>`
       rgba(255, 255, 255, 0.63) 0%,
       rgba(0, 0, 0, 0.63) 100%
     ),
-    ${({ theme, type }) => theme.colors[type]};
+    ${(props) => props.theme.colors[props.pokemonType] || "white"};
   background-blend-mode: soft-light, normal;
 
   .pokemon-infos-container {
-    border: 1px solid red;
+    //border: 1px solid red;
     max-width: 1000px;
 
     .title-container {
@@ -92,16 +92,17 @@ export const StyledPokemonInfos = styled.div<Props>`
 `;
 
 export const NumberId = styled.div`
-  //position: absolute;
   font-family: Montserrat;
   font-weight: 900;
   font-size: 20vmax;
   color: rgba(255, 255, 255, 0.18);
-  /*user-select: none;
+`;
+//position: absolute;
+/*user-select: none;
   right: 0;
   //top: 50px;*/
-  //z-index: -1;
-`;
+//z-index: -1;
+
 type BarProps = { w: number };
 export const Bar = styled.div<BarProps>`
   background-color: white;
@@ -113,7 +114,7 @@ export const Bar = styled.div<BarProps>`
 
 type ArrowProps = { dir: string };
 export const Arrow = styled.div<ArrowProps>`
-  background-color: gray;
+  //background-color: gray;
   display: flex;
   align-items: center;
   margin-left: ${({ dir }) => (dir === "left" ? "40px" : "")};
