@@ -7,7 +7,6 @@ import { PokemonData, PokemonDetails } from "./types";
 import Navbar from "./components/Navbar";
 import PokemonList from "./components/PokemonList";
 import PokemonInfos from "./components/PokemonInfos";
-import Pokepoke from "./components/Poke";
 
 import "./App.css";
 import { theme } from "./theme";
@@ -68,7 +67,6 @@ function App() {
             }
           />
           <Route path=':name' element={<PokemonInfos />} />
-          {/*  <Pokepoke />*/}
         </Routes>
       </div>
     </ThemeProvider>

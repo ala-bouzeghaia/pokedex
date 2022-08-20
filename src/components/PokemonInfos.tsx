@@ -9,7 +9,6 @@ import {
   Bar,
   Arrow,
 } from "./styles/PokemonInfos.styled";
-import { theme } from "../theme";
 
 const getPokemonDetails = async (
   name: string | undefined
@@ -47,6 +46,7 @@ const PokemonInfos = () => {
         setPokemonDetails(res);
         console.log("data", res);
       });
+    // eslint-disable-next-line
   }, []);
 
   return (
