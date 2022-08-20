@@ -33,7 +33,7 @@ const getFormatedId = (id: number) => {
 const PokemonInfos = () => {
   const params = useParams();
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails>();
-  // const [name, setName] = useState<string>();
+  const [id, setId] = useState(params.id);
 
   //console.log("params.id =", params.name);
   //getPokemonDetails(params.name).then((res) => console.log("data", res));
@@ -43,7 +43,7 @@ const PokemonInfos = () => {
       getPokemonDetails(params.id).then((res) => {
         setPokemonDetails(res);
       });
-  }, [params.id]);
+  }, [id]);
 
   return (
     <StyledPokemonInfos
@@ -59,8 +59,10 @@ const PokemonInfos = () => {
     >
       {pokemonDetails && (
         <>
-          <Arrow dir='left'>
-            <Link to={`${Number(pokemonDetails.id) - 1}`}> </Link>
+          <Arrow
+            dir='left'
+            onClick={() => setId(`${Number(pokemonDetails.id) - 1}`)}>
+            <a href={`${Number(pokemonDetails.id) - 1}`}> </a>
           </Arrow>
           <div /* style={{ position: "relative", zIndex: "3" }} */
             className='pokemon-infos-container'>
@@ -116,7 +118,9 @@ const PokemonInfos = () => {
               </div>
             </div>
           </div>
-          <Arrow dir='right'>
+          <Arrow
+            dir='right'
+            onClick={() => setId(`${Number(pokemonDetails.id) + 1}`)}>
             {" "}
             <a href={`${Number(pokemonDetails.id) + 1}`}> </a>
           </Arrow>
