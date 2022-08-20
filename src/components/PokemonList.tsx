@@ -9,7 +9,7 @@ const PokemonList: React.FC<Props> = ({ pokemonList }) => {
   return (
     <StyledPokemonList>
       {pokemonList?.map((pokemon, idx: number) => (
-        <Link to={`/${pokemon.name}`} key={idx}>
+        <Link to={`/${pokemon.id}`} key={idx}>
           <Pokemon pokemon={pokemon} />
         </Link>
       ))}
