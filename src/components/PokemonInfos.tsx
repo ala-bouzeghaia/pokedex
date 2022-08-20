@@ -42,10 +42,8 @@ const PokemonInfos = () => {
     params.id &&
       getPokemonDetails(params.id).then((res) => {
         setPokemonDetails(res);
-        console.log("data", res);
       });
-    // eslint-disable-next-line
-  }, []);
+  }, [params.id]);
 
   return (
     <StyledPokemonInfos
