@@ -66,7 +66,7 @@ function App() {
               </Container>
             }
           />
-          <Route path=':name' element={<PokemonInfos />} />
+          <Route path=':id' element={<PokemonInfos />} />
         </Routes>
       </div>
     </ThemeProvider>

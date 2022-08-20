@@ -10,10 +10,8 @@ import {
   Arrow,
 } from "./styles/PokemonInfos.styled";
 
-const getPokemonDetails = async (
-  name: string | undefined
-): Promise<PokemonDetails> => {
-  const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+const getPokemonDetails = async (id: string): Promise<PokemonDetails> => {
+  const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
   const data = await res.data;
   //console.log("data", data);
   return data;
@@ -41,8 +39,8 @@ const PokemonInfos = () => {
   //getPokemonDetails(params.name).then((res) => console.log("data", res));
 
   useEffect(() => {
-    params.name &&
-      getPokemonDetails(params.name).then((res) => {
+    params.id &&
+      getPokemonDetails(params.id).then((res) => {
         setPokemonDetails(res);
         console.log("data", res);
       });
