@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PokemonDetails } from "../types";
 
 import {
@@ -43,6 +43,7 @@ const PokemonInfos = () => {
       getPokemonDetails(params.id).then((res) => {
         setPokemonDetails(res);
       });
+    // eslint-disable-next-line
   }, [id]);
 
   return (
