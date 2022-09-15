@@ -44,7 +44,7 @@ const Navbar = () => {
     <StyledNavbar>
       <Container>
         <Link to='/'>
-          <img src='./pokedex_tool_icon_48.png' alt='logo' />
+          <img src='./Pokedex_tool_icon_48.png' alt='logo' />
           pokedex
         </Link>
         <select
