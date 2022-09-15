@@ -1,9 +1,26 @@
 import { Link } from "react-router-dom";
-import { PokemonDetails } from "../types";
+// import { PokemonDetails } from "../types";
 import Pokemon from "./Pokemon";
 import { StyledPokemonList } from "./styles/PokemonList.styled";
 
-type Props = { pokemonList: PokemonDetails[] };
+type pokemonType = {
+  type: {
+    name: string;
+  };
+};
+type finalResultType = {
+  id: number;
+  name: string;
+  sprites: {
+    front_default: string;
+    other: {
+      "official-artwork": { front_default: string };
+    };
+  };
+  types: pokemonType[];
+};
+
+type Props = { pokemonList: finalResultType[] };
 
 const PokemonList: React.FC<Props> = ({ pokemonList }) => {
   return (

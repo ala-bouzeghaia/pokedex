@@ -1,7 +1,24 @@
-import { PokemonDetails } from "../types";
+// import { PokemonDetails } from "../types";
 import { StyledPokemon } from "./styles/Pokemon.styled";
 
-type Props = { pokemon: PokemonDetails };
+type pokemonType = {
+  type: {
+    name: string;
+  };
+};
+type finalResultType = {
+  id: number;
+  name: string;
+  sprites: {
+    front_default: string;
+    other: {
+      "official-artwork": { front_default: string };
+    };
+  };
+  types: pokemonType[];
+};
+
+type Props = { pokemon: finalResultType };
 
 const capitalizeFirstLetter = (str: string) => {
   return str[0].toUpperCase() + str.substring(1);

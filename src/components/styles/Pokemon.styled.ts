@@ -4,6 +4,8 @@ export const StyledPokemon = styled.div`
   border: 1px solid lightgray;
   border-radius: 1rem;
   min-height: 250px;
+  width: 180px;
+  background-color: white;
   :hover {
     cursor: pointer;
   }
