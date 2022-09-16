@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { IoSearch, IoShuffle } from "react-icons/io5";
 import { useLanguage } from "./LanguageContext";
 import { Container } from "./styles/Container.styled";
 
@@ -27,6 +30,9 @@ export const StyledNavbar = styled.nav`
     img {
       margin-right: 10px;
     }
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   select {
@@ -35,10 +41,63 @@ export const StyledNavbar = styled.nav`
     font-size: 1rem;
     font-family: "Montserrat", sans-serif;
   }
+
+  .search-container {
+    input {
+      height: 23px;
+      border: none;
+      /* padding: 0 10px; */
+      /* background-color: red; */
+      /*color: white; */
+
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        /* color: white; */
+      }
+    }
+  }
+
+  .search-box {
+    margin: 0 20px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid gray;
+    svg {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    svg:nth-child(2) {
+      margin-right: 5px;
+    }
+  }
 `;
 
 const Navbar = () => {
   const { setLanguage } = useLanguage();
+  const [searchedPokemon, setSearchedPokemon] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = async (pokemon: string) => {
+    try {
+      const res = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${pokemon}`
+      );
+      const data = await res.data;
+      navigate(`/${data.id}`);
+    } catch (error) {
+      console.log(error);
+      alert("Pokemon not found");
+    }
+  };
+
+  const handleRandom = () => {
+    const max = 900;
+    const randomId = Math.floor(Math.random() * max);
+    navigate(`/${randomId}`);
+  };
 
   return (
     <StyledNavbar>
@@ -47,13 +106,25 @@ const Navbar = () => {
           <img src='./Pokedex_tool_icon_48.png' alt='logo' />
           pokedex
         </Link>
-        <select
-          onChange={(e) => {
-            setLanguage(e.target.value);
-          }}>
-          <option value='fr'>Français (fr)</option>
-          <option value='en'>English (en)</option>
-        </select>
+        <div className='search-container'>
+          <div className='search-box'>
+            <input
+              type='search'
+              placeholder='Search here'
+              value={searchedPokemon}
+              onChange={(e) => setSearchedPokemon(e.target.value)}></input>
+            <IoSearch onClick={() => handleSearch(searchedPokemon)} />
+            <IoShuffle onClick={handleRandom} />
+          </div>
+
+          <select
+            onChange={(e) => {
+              setLanguage(e.target.value);
+            }}>
+            <option value='fr'>Français (fr)</option>
+            <option value='en'>English (en)</option>
+          </select>
+        </div>
       </Container>
     </StyledNavbar>
   );

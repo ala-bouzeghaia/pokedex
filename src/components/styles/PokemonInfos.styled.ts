@@ -14,7 +14,7 @@ export const StyledPokemonInfos = styled.div<Props>`
     width: max-content;
   } */
   @media (max-width: 900px) {
-    width: max-content;
+    /* width: max-content; */
 
     .title-container {
       flex-direction: column-reverse;
@@ -75,8 +75,30 @@ export const StyledPokemonInfos = styled.div<Props>`
     /* top: -12vh; */
     /* padding-top: 12vh; */
 
+    .loading-container {
+      display: flex;
+      align-items: center;
+    }
+    .spinner {
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 4px solid;
+      border-color: white white rgba(255, 255, 255, 0.18)
+        rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      animation: spin-anim 0.6s linear infinite;
+    }
+    @keyframes spin-anim {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
     .pokemon-infos-container {
-      border: 1px solid red;
+      /* border: 1px solid red; */
       width: 1000px;
 
       /* @media (max-width: 900px) {
@@ -193,6 +215,19 @@ export const StyledPokemonInfos = styled.div<Props>`
           }
         }
       }
+    }
+  }
+  .arrow {
+    display: flex;
+    align-items: center;
+    svg {
+      color: white;
+      opacity: 0.18;
+      &:hover {
+        cursor: pointer;
+        opacity: 1;
+      }
+      transition: opacity 0.25s ease-in-out;
     }
   }
 `;

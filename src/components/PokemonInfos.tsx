@@ -4,12 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 // import { PokemonDetails } from "../types";
 import Navbar from "./Navbar";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 import {
   StyledPokemonInfos,
   NumberId,
   Bar,
-  Arrow,
 } from "./styles/PokemonInfos.styled";
 import { useLanguage } from "./LanguageContext";
 
@@ -126,11 +126,12 @@ const getFormatedId = (id: number) => {
 const PokemonInfos = () => {
   const params = useParams();
   const [pokemonDetails, setPokemonDetails] = useState<finalResultType>();
-  const [id, setId] = useState(params.id as string);
+  // const [id, setId] = useState(params.id as string);
   const [loading, setLoading] = useState(true);
   const cachedBackgroundColor = sessionStorage.getItem("color");
   console.log("cached", cachedBackgroundColor);
   const { language } = useLanguage();
+  const id = params.id as string;
 
   //console.log("params.id =", params.name);
   //getPokemonDetails(params.name).then((res) => console.log("data", res));
@@ -151,9 +152,13 @@ const PokemonInfos = () => {
     <StyledPokemonInfos
       pokemonType={cachedBackgroundColor ? `${cachedBackgroundColor}` : ""}>
       <Navbar />
-      {pokemonDetails && (
-        <div className='pokemon-infos'>
-          <Arrow
+
+      <div className='pokemon-infos'>
+        <Link className='arrow' to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
+          <IoChevronBack size={64} />
+        </Link>
+
+        {/* <Arrow
             dir='left'
             onClick={() => {
               setId(`${pokemonDetails.id - 1}`);
@@ -162,77 +167,85 @@ const PokemonInfos = () => {
             <Link to={`/${pokemonDetails.id > 1 ? pokemonDetails.id - 1 : ""}`}>
               {" "}
             </Link>
-          </Arrow>
-          <NumberId>{getFormatedId(Number(id))}</NumberId>
-          <AnimatePresence mode='wait'>
-            <motion.div
-              key={pokemonDetails.id}
-              className='pokemon-infos-container'
-              // variants={animations}
-              // initial='initial'
-              // animate='animate'
-              // exit='exit'
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              // initial={{ opacity: 0, y: 300 }}
-              // animate={{ opacity: 1, y: 0 }}
-              transition={{
-                // y: { duration: 1.5 },
-                // repeatType: "reverse",
-                opacity: { duration: 1.2 },
-                y: { duration: 1.2 },
-              }}>
-              <div className='title-container'>
-                <div className='title'>
-                  <div className='type'>
-                    {pokemonDetails.types[0].type.name.toUpperCase()}
-                  </div>
-                  <h1 className='name'>{pokemonDetails.name}</h1>
-                  <div className='details'>
-                    <div className='row'>
-                      <span>{language === "en" ? "Height" : "Taille"}</span>
-                      <span>{`${pokemonDetails.height / 10}M`}</span>
+          </Arrow> */}
+        {pokemonDetails && !loading ? (
+          <>
+            <NumberId>{getFormatedId(Number(id))}</NumberId>
+            <AnimatePresence mode='wait'>
+              <motion.div
+                key={pokemonDetails.id}
+                className='pokemon-infos-container'
+                // variants={animations}
+                // initial='initial'
+                // animate='animate'
+                // exit='exit'
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                // initial={{ opacity: 0, y: 300 }}
+                // animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  // y: { duration: 1.5 },
+                  // repeatType: "reverse",
+                  opacity: { duration: 1.2 },
+                  y: { duration: 1.2 },
+                }}>
+                <div className='title-container'>
+                  <div className='title'>
+                    <div className='type'>
+                      {pokemonDetails.types[0].type.name.toUpperCase()}
                     </div>
-                    <div className='row'>
-                      <span>{language === "en" ? "Weight" : "Poids"}</span>
-                      <span>{`${pokemonDetails.weight / 10}KG`}</span>
-                    </div>
-                    <div className='row'>
-                      <span>
-                        {language === "en" ? "Abilities" : "Capacités"}
-                      </span>
-                      <span>{pokemonDetails.abilities[0].ability.name}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <img
-                  src={
-                    pokemonDetails.sprites.other["official-artwork"]
-                      .front_default
-                  }
-                  alt={pokemonDetails.name}
-                />
-              </div>
-
-              <div className='stats-container'>
-                <h3>Stats</h3>
-                <div className='stats'>
-                  {pokemonDetails.stats.map((elt, idx: number) => (
-                    <div key={idx} className='stats-row'>
-                      <span>{elt.stat.name}</span>
-                      <div className='base-stat'>
-                        <Bar w={elt.base_stat}></Bar>
-                        <span>{elt.base_stat}</span>
+                    <h1 className='name'>{pokemonDetails.name}</h1>
+                    <div className='details'>
+                      <div className='row'>
+                        <span>{language === "en" ? "Height" : "Taille"}</span>
+                        <span>{`${pokemonDetails.height / 10}M`}</span>
+                      </div>
+                      <div className='row'>
+                        <span>{language === "en" ? "Weight" : "Poids"}</span>
+                        <span>{`${pokemonDetails.weight / 10}KG`}</span>
+                      </div>
+                      <div className='row'>
+                        <span>
+                          {language === "en" ? "Abilities" : "Capacités"}
+                        </span>
+                        <span>{pokemonDetails.abilities[0].ability.name}</span>
                       </div>
                     </div>
-                  ))}
+                  </div>
+
+                  <img
+                    src={
+                      pokemonDetails.sprites.other["official-artwork"]
+                        .front_default
+                    }
+                    alt={pokemonDetails.name}
+                  />
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          <Arrow
+
+                <div className='stats-container'>
+                  <h3>Stats</h3>
+                  <div className='stats'>
+                    {pokemonDetails.stats.map((elt, idx: number) => (
+                      <div key={idx} className='stats-row'>
+                        <span>{elt.stat.name}</span>
+                        <div className='base-stat'>
+                          <Bar w={elt.base_stat}></Bar>
+                          <span>{elt.base_stat}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </>
+        ) : (
+          <div className='loading-container'>
+            <div className='spinner'></div>
+          </div>
+        )}
+        {/* <Arrow
             dir='right'
             onClick={() => {
               setId(`${Number(pokemonDetails.id) + 1}`);
@@ -240,9 +253,11 @@ const PokemonInfos = () => {
             }}>
             {" "}
             <Link to={`/${pokemonDetails.id + 1}`}> </Link>
-          </Arrow>
-        </div>
-      )}
+          </Arrow> */}
+        <Link className='arrow' to={`/${Number(id) + 1}`}>
+          <IoChevronForward size={64} />
+        </Link>
+      </div>
     </StyledPokemonInfos>
   );
 };
