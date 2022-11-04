@@ -77,8 +77,10 @@ export const StyledPokemonInfos = styled.div<Props>`
     /* padding-top: 12vh; */
 
     .loading-container {
+      width: 100%;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
     .spinner {
       width: 2.5rem;
