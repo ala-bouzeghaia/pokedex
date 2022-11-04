@@ -165,7 +165,7 @@ const PokemonInfos = () => {
     // NOTE: another approach via onSwiping
     // onSwiping: ({ event }) => event.stopPropagation(),
     // preventDefaultTouchmoveEvent: true
-    preventScrollOnSwipe: true,
+    // preventScrollOnSwipe: true,
   });
 
   return (
