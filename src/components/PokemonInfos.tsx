@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
 // import { PokemonDetails } from "../types";
 import Navbar from "./Navbar";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
@@ -132,6 +133,7 @@ const PokemonInfos = () => {
   console.log("cached", cachedBackgroundColor);
   const { language } = useLanguage();
   const id = params.id as string;
+  const navigate = useNavigate();
 
   //console.log("params.id =", params.name);
   //getPokemonDetails(params.name).then((res) => console.log("data", res));
@@ -148,12 +150,30 @@ const PokemonInfos = () => {
     });
   }, [id, language]);
 
+  const handlersBox = useSwipeable({
+    onSwiped: ({ dir, event }) => {
+      // NOTE: this stops the propagation of the event
+      // from reaching the document swipe listeners
+      event.stopPropagation();
+      if (dir === "Left") {
+        navigate(`/${Number(id) + 1}`);
+      }
+      if (dir === "Right") {
+        navigate(`/${Number(id) > 1 ? Number(id) - 1 : ""}`);
+      }
+    },
+    // NOTE: another approach via onSwiping
+    // onSwiping: ({ event }) => event.stopPropagation(),
+    // preventDefaultTouchmoveEvent: true
+    preventScrollOnSwipe: true,
+  });
+
   return (
     <StyledPokemonInfos
       pokemonType={cachedBackgroundColor ? `${cachedBackgroundColor}` : ""}>
       <Navbar />
 
-      <div className='pokemon-infos'>
+      <div className='pokemon-infos' {...handlersBox}>
         <Link className='arrow' to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
           <IoChevronBack /* size={64} */ />
         </Link>
