@@ -101,7 +101,7 @@ function App() {
 
   useEffect(() => {
     if (language === lastLanguage.current) {
-      const limit = 10;
+      const limit = 30;
       getPokemonList(limit, offset, language).then((res) =>
         setPokemonList((prev) => [...prev, ...res])
       );
@@ -111,7 +111,7 @@ function App() {
       setOffset(lastOffset.current);
       setPokemonList([]);
       getPokemonList(
-        lastOffset.current !== 0 ? lastOffset.current + 10 : 10,
+        lastOffset.current !== 0 ? lastOffset.current + 30 : 30,
         0,
         language
       ).then((res) => setPokemonList(res));
@@ -130,7 +130,7 @@ function App() {
                   <Navbar />
                   <Container>
                     <PokemonList pokemonList={pokemonList} />
-                    <Button onClick={() => setOffset((prev) => prev + 10)}>
+                    <Button onClick={() => setOffset((prev) => prev + 30)}>
                       LOAD MORE
                     </Button>
                   </Container>

@@ -56,6 +56,7 @@ export const StyledPokemonInfos = styled.div<Props>`
     ${(props) => props.theme.colors[props.pokemonType]};
   background-blend-mode: soft-light, normal;
   transition: all 0.5s ease-in-out;
+
   .pokemon-infos {
     display: flex;
     justify-content: space-between;
@@ -100,6 +101,7 @@ export const StyledPokemonInfos = styled.div<Props>`
     .pokemon-infos-container {
       /* border: 1px solid red; */
       width: 1000px;
+      padding: 0 20px;
 
       /* @media (max-width: 900px) {
         .title-container {
@@ -151,7 +153,7 @@ export const StyledPokemonInfos = styled.div<Props>`
             font-weight: 500;
           }
           .name {
-            font-size: 4rem;
+            font-size: min(15vw, 4rem);
             text-transform: capitalize;
           }
           .details {
@@ -223,6 +225,8 @@ export const StyledPokemonInfos = styled.div<Props>`
     svg {
       color: white;
       opacity: 0.18;
+      width: 64px;
+      height: 64px;
       &:hover {
         cursor: pointer;
         opacity: 1;
@@ -230,9 +234,33 @@ export const StyledPokemonInfos = styled.div<Props>`
       transition: opacity 0.25s ease-in-out;
     }
   }
+  @media (max-width: 500px) {
+    .pokemon-infos {
+      /* flex-direction: column;
+      align-items: center; */
+      /* & :nth-child(1) {
+        order: 1;
+      }
+      & :nth-child(2) {
+        order: 2;
+      }
+      & :nth-child(3) {
+        order: 3;
+      }
+      & :nth-child(4) {
+        order: 1;
+      } */
+    }
+    .arrow {
+      display: none;
+    }
+  }
 `;
 
 export const NumberId = styled.div`
+  .arrow {
+    display: none;
+  }
   position: absolute;
   left: 0;
   right: 0;
@@ -242,8 +270,24 @@ export const NumberId = styled.div`
   z-index: -1;
   font-family: Montserrat;
   font-weight: 900;
-  font-size: 20vmax;
+  font-size: min(25vw, 25rem);
   color: rgba(255, 255, 255, 0.18);
+  @media (max-width: 500px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .arrow {
+      display: flex;
+      /* align-items: center; */
+      svg {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+  @media (max-width: 425px) {
+    /* font-size: 13vmax; */
+  }
 `;
 //position: absolute;
 /*user-select: none;

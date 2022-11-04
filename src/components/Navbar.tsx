@@ -6,16 +6,30 @@ import { IoSearch, IoShuffle } from "react-icons/io5";
 import { useLanguage } from "./LanguageContext";
 import { Container } from "./styles/Container.styled";
 
-export const StyledNavbar = styled.nav`
-  height: 8vh;
+type Props = {
+  open: boolean;
+};
+
+export const StyledNavbar = styled.nav<Props>`
+  min-height: 8vh;
   width: 100%;
   div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 0 10px;
+    /* flex-wrap: wrap; */
+    /* padding: 0 10px; */
+    gap: 10px;
+    @media (max-width: 768px) {
+      /* flex-direction: column; */
+      p {
+        display: ${({ open }) => (open ? "none" : "")};
+      }
+    }
   }
+  /* div:nth-child(2) {
+    flex-direction: column;
+  } */
 
   /* justify-content: center; */
   //background-color: #cee9f1;
@@ -40,27 +54,74 @@ export const StyledNavbar = styled.nav`
     border-radius: 5px;
     font-size: 1rem;
     font-family: "Montserrat", sans-serif;
+    background-color: white;
+  }
+
+  .menu_items-container {
+    display: flex;
+    /* @media (max-width: 620px) {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      gap: 10px;
+    } */
+    @media (max-width: 560px) {
+      /* width: 40%; */
+      flex-direction: ${({ open }) => (open ? "row" : "row-reverse")};
+      .search-container {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        gap: 10px;
+        .search-box {
+          /* width: 55%; */
+          display: flex;
+          input {
+            width: 60%;
+          }
+        }
+      }
+    }
+    @media (max-width: 320px) {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      gap: 10px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
   }
 
   .search-container {
+    /* position: absolute;
+    right: 70px; */
+    display: flex;
+    gap: 20px;
     input {
       height: 23px;
       border: none;
-      /* padding: 0 10px; */
-      /* background-color: red; */
-      /*color: white; */
-
+      background-color: transparent;
       &:focus {
         outline: none;
       }
-      &::placeholder {
-        /* color: white; */
-      }
+    }
+    @media (max-width: 768px) {
+      display: ${({ open }) => (open ? "" : "none")};
+
+      /* position: relative;
+      right: 70px; */
+    }
+  }
+  @media (max-width: 620px) {
+    .search-container {
+      display: ${({ open }) => (open ? "" : "none")};
+
+      /* flex-direction: column;
+      gap: 10px; */
     }
   }
 
   .search-box {
-    margin: 0 20px;
+    /* margin: 0 20px; */
+    /* padding: 0 10px; */
+    flex-wrap: nowrap;
     border-radius: 5px;
     background-color: white;
     border: 1px solid gray;
@@ -75,9 +136,43 @@ export const StyledNavbar = styled.nav`
   }
 `;
 
+const Hamburger = styled.div<Props>`
+  @media (max-width: 768px) {
+    /* position: absolute;
+    top: 20px;
+    right: 10px; */
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 0 !important;
+    div {
+      background-color: white;
+      width: 30px;
+      height: 3px;
+      margin: 2.5px 0 2.5px 0;
+      border-radius: 1rem;
+    }
+    div:nth-child(1) {
+      transform: ${({ open }) =>
+        open ? "rotate(45deg) translate(5px, 6px)" : ""};
+      transition: transform 0.5s ease-in;
+    }
+    div:nth-child(2) {
+      opacity: ${({ open }) => (open ? 0 : 1)};
+      transition: opacity 0.5s ease-in;
+    }
+    div:nth-child(3) {
+      transform: ${({ open }) =>
+        open ? "rotate(-45deg) translate(5px, -6px)" : ""};
+      transition: transform 0.5s ease-in;
+    }
+  }
+`;
+
 const Navbar = () => {
-  const { setLanguage } = useLanguage();
   const [searchedPokemon, setSearchedPokemon] = useState("");
+  const [openHamburger, setOpenHamburger] = useState(false);
+  const { setLanguage } = useLanguage();
   const navigate = useNavigate();
 
   const handleSearch = async (pokemon: string) => {
@@ -100,30 +195,41 @@ const Navbar = () => {
   };
 
   return (
-    <StyledNavbar>
+    <StyledNavbar open={openHamburger}>
       <Container>
         <Link to='/'>
           <img src='./Pokedex_tool_icon_48.png' alt='logo' />
-          pokedex
+          <p>pokedex</p>
         </Link>
-        <div className='search-container'>
-          <div className='search-box'>
-            <input
-              type='search'
-              placeholder='Search here'
-              value={searchedPokemon}
-              onChange={(e) => setSearchedPokemon(e.target.value)}></input>
-            <IoSearch onClick={() => handleSearch(searchedPokemon)} />
-            <IoShuffle onClick={handleRandom} />
-          </div>
+        <div className='menu_items-container'>
+          <div className='search-container'>
+            <div className='search-box'>
+              <input
+                type='search'
+                placeholder='Search here'
+                value={searchedPokemon}
+                onChange={(e) => setSearchedPokemon(e.target.value)}></input>
+              <IoSearch onClick={() => handleSearch(searchedPokemon)} />
+              <IoShuffle onClick={handleRandom} />
+            </div>
 
-          <select
-            onChange={(e) => {
-              setLanguage(e.target.value);
+            <select
+              onChange={(e) => {
+                setLanguage(e.target.value);
+              }}>
+              <option value='fr'>Français (fr)</option>
+              <option value='en'>English (en)</option>
+            </select>
+          </div>
+          <Hamburger
+            open={openHamburger}
+            onClick={() => {
+              setOpenHamburger(!openHamburger);
             }}>
-            <option value='fr'>Français (fr)</option>
-            <option value='en'>English (en)</option>
-          </select>
+            <div></div>
+            <div></div>
+            <div></div>
+          </Hamburger>
         </div>
       </Container>
     </StyledNavbar>

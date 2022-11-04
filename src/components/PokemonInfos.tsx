@@ -155,7 +155,7 @@ const PokemonInfos = () => {
 
       <div className='pokemon-infos'>
         <Link className='arrow' to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
-          <IoChevronBack size={64} />
+          <IoChevronBack /* size={64} */ />
         </Link>
 
         {/* <Arrow
@@ -170,7 +170,17 @@ const PokemonInfos = () => {
           </Arrow> */}
         {pokemonDetails && !loading ? (
           <>
-            <NumberId>{getFormatedId(Number(id))}</NumberId>
+            <NumberId>
+              <Link
+                className='arrow'
+                to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
+                <IoChevronBack /* size={64} */ />
+              </Link>
+              <p>{getFormatedId(Number(id))}</p>
+              <Link className='arrow' to={`/${Number(id) + 1}`}>
+                <IoChevronForward /* size={64} */ />
+              </Link>
+            </NumberId>
             <AnimatePresence mode='wait'>
               <motion.div
                 key={pokemonDetails.id}
@@ -255,7 +265,7 @@ const PokemonInfos = () => {
             <Link to={`/${pokemonDetails.id + 1}`}> </Link>
           </Arrow> */}
         <Link className='arrow' to={`/${Number(id) + 1}`}>
-          <IoChevronForward size={64} />
+          <IoChevronForward /* size={64} */ />
         </Link>
       </div>
     </StyledPokemonInfos>
