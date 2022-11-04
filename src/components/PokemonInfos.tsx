@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-// import { PokemonDetails } from "../types";
 import Navbar from "./Navbar";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
@@ -47,9 +46,7 @@ type finalResultType = {
 const getPokemonDetails = async (id: string, language: string) => {
   const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
   const data = await res.data;
-  console.log("data", data);
 
-  // const finalResults = {};
   const dataId = await data.id;
   const dataSprites = await data.sprites;
   const resName = await axios.get(data.species.url);
@@ -68,7 +65,7 @@ const getPokemonDetails = async (id: string, language: string) => {
       (elt: { language: { name: string } }) => elt.language.name === language
     )[0].name;
     const type = { name: typeName };
-    // console.log(type);
+
     dataTypes.push({ type });
   }
 
@@ -81,7 +78,7 @@ const getPokemonDetails = async (id: string, language: string) => {
       (elt: { language: { name: string } }) => elt.language.name === language
     )[0].name;
     const ability = { name: abilityName };
-    // console.log(type);
+
     dataAbilities.push({ ability });
   }
 
@@ -105,10 +102,9 @@ const getPokemonDetails = async (id: string, language: string) => {
     stats: dataStats,
     abilities: dataAbilities,
   };
-  console.log("finalResults", finalResults);
+
   return { data, finalResults };
 };
-//getPokemonDetails("bulbasaur");
 
 const getFormatedId = (id: number) => {
   let str = id.toString();
@@ -118,26 +114,14 @@ const getFormatedId = (id: number) => {
   return `#${str}`;
 };
 
-// const animations = {
-//   initial: { opacity: 1, y: 300 },
-//   animate: { opacity: 1, y: 0 },
-//   exit: { opacity: 1, y: -300 },
-// };
-
 const PokemonInfos = () => {
   const params = useParams();
   const [pokemonDetails, setPokemonDetails] = useState<finalResultType>();
-  // const [id, setId] = useState(params.id as string);
   const [loading, setLoading] = useState(true);
   const cachedBackgroundColor = sessionStorage.getItem("color");
-  console.log("cached", cachedBackgroundColor);
   const { language } = useLanguage();
   const id = params.id as string;
   const navigate = useNavigate();
-
-  //console.log("params.id =", params.name);
-  //getPokemonDetails(params.name).then((res) => console.log("data", res));
-  console.log(loading);
 
   useEffect(() => {
     getPokemonDetails(id, language).then((res) => {
@@ -162,10 +146,6 @@ const PokemonInfos = () => {
         navigate(`/${Number(id) > 1 ? Number(id) - 1 : ""}`);
       }
     },
-    // NOTE: another approach via onSwiping
-    // onSwiping: ({ event }) => event.stopPropagation(),
-    // preventDefaultTouchmoveEvent: true
-    // preventScrollOnSwipe: true,
   });
 
   return (
@@ -175,48 +155,30 @@ const PokemonInfos = () => {
 
       <div className='pokemon-infos' {...handlersBox}>
         <Link className='arrow' to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
-          <IoChevronBack /* size={64} */ />
+          <IoChevronBack />
         </Link>
 
-        {/* <Arrow
-            dir='left'
-            onClick={() => {
-              setId(`${pokemonDetails.id - 1}`);
-              setLoading(true);
-            }}>
-            <Link to={`/${pokemonDetails.id > 1 ? pokemonDetails.id - 1 : ""}`}>
-              {" "}
-            </Link>
-          </Arrow> */}
         {pokemonDetails && !loading ? (
           <>
             <NumberId>
               <Link
                 className='arrow'
                 to={`/${Number(id) > 1 ? Number(id) - 1 : ""}`}>
-                <IoChevronBack /* size={64} */ />
+                <IoChevronBack />
               </Link>
               <p>{getFormatedId(Number(id))}</p>
               <Link className='arrow' to={`/${Number(id) + 1}`}>
-                <IoChevronForward /* size={64} */ />
+                <IoChevronForward />
               </Link>
             </NumberId>
             <AnimatePresence mode='wait'>
               <motion.div
                 key={pokemonDetails.id}
                 className='pokemon-infos-container'
-                // variants={animations}
-                // initial='initial'
-                // animate='animate'
-                // exit='exit'
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
-                // initial={{ opacity: 0, y: 300 }}
-                // animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  // y: { duration: 1.5 },
-                  // repeatType: "reverse",
                   opacity: { duration: 1.2 },
                   y: { duration: 1.2 },
                 }}>
@@ -275,17 +237,9 @@ const PokemonInfos = () => {
             <div className='spinner'></div>
           </div>
         )}
-        {/* <Arrow
-            dir='right'
-            onClick={() => {
-              setId(`${Number(pokemonDetails.id) + 1}`);
-              setLoading(true);
-            }}>
-            {" "}
-            <Link to={`/${pokemonDetails.id + 1}`}> </Link>
-          </Arrow> */}
+
         <Link className='arrow' to={`/${Number(id) + 1}`}>
-          <IoChevronForward /* size={64} */ />
+          <IoChevronForward />
         </Link>
       </div>
     </StyledPokemonInfos>

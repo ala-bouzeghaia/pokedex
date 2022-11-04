@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { IoSearch, IoShuffle } from "react-icons/io5";
@@ -8,6 +8,7 @@ import { Container } from "./styles/Container.styled";
 
 type Props = {
   open: boolean;
+  bgColor?: string;
 };
 
 export const StyledNavbar = styled.nav<Props>`
@@ -146,7 +147,7 @@ const Hamburger = styled.div<Props>`
     cursor: pointer;
     gap: 0 !important;
     div {
-      background-color: white;
+      background-color: ${({ bgColor }) => bgColor};
       width: 30px;
       height: 3px;
       margin: 2.5px 0 2.5px 0;
@@ -174,7 +175,9 @@ const Navbar = () => {
   const [openHamburger, setOpenHamburger] = useState(false);
   const { setLanguage } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
 
+  console.log("location", location);
   const handleSearch = async (pokemon: string) => {
     try {
       const res = await axios.get(
@@ -223,6 +226,7 @@ const Navbar = () => {
           </div>
           <Hamburger
             open={openHamburger}
+            bgColor={location.pathname === "/" ? "gray" : "white"}
             onClick={() => {
               setOpenHamburger(!openHamburger);
             }}>
