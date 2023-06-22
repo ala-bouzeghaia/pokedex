@@ -123,7 +123,11 @@ const PokemonInfos = () => {
   const id = params.id as string;
   const navigate = useNavigate();
 
+  console.log(typeof id);
   useEffect(() => {
+    if (id === "undefined" || id === "NaN") {
+      navigate("/");
+    }
     getPokemonDetails(id, language).then((res) => {
       setPokemonDetails(res.finalResults);
       setLoading(false);
@@ -132,7 +136,7 @@ const PokemonInfos = () => {
         `${res.data.types[0].type.name.toLowerCase()}`
       );
     });
-  }, [id, language]);
+  }, [id, language, navigate]);
 
   const handlersBox = useSwipeable({
     onSwiped: ({ dir, event }) => {
