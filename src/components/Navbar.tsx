@@ -177,7 +177,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log("location", location);
+  // console.log("location", location);
   const handleSearch = async (pokemon: string) => {
     try {
       const res = await axios.get(
@@ -186,7 +186,7 @@ const Navbar = () => {
       const data = await res.data;
       navigate(`/${data.id}`);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       alert("Pokemon not found");
     }
   };

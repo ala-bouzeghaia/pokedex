@@ -82,7 +82,7 @@ const getPokemonList = async (
     }
     finalResults.push({ id, name, sprites, types });
   }
-  console.log("finalResults", finalResults);
+  // console.log("finalResults", finalResults);
   return finalResults;
 };
 //getPokemonList();
@@ -93,18 +93,21 @@ function App() {
   const { language } = useLanguage();
   const location = useLocation();
   // console.log(location);
-  console.log("language", language);
+  // console.log("language", language);
   const lastOffset = useRef(0);
   const lastLanguage = useRef("fr");
-  console.log(lastOffset.current, lastLanguage.current);
-  console.log(lastOffset.current, offset);
+  // console.log(lastOffset.current, lastLanguage.current);
+  // console.log(lastOffset.current, offset);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (language === lastLanguage.current) {
       const limit = 30;
-      getPokemonList(limit, offset, language).then((res) =>
-        setPokemonList((prev) => [...prev, ...res])
-      );
+      getPokemonList(limit, offset, language).then((res) => {
+        setPokemonList((prev) => [...prev, ...res]);
+        setLoading(false);
+      });
       lastOffset.current = offset;
     } else {
       lastLanguage.current = language;
@@ -114,7 +117,10 @@ function App() {
         lastOffset.current !== 0 ? lastOffset.current + 30 : 30,
         0,
         language
-      ).then((res) => setPokemonList(res));
+      ).then((res) => {
+        setPokemonList(res);
+        setLoading(false);
+      });
     }
   }, [offset, language]);
 
@@ -128,12 +134,18 @@ function App() {
               element={
                 <>
                   <Navbar />
-                  <Container>
-                    <PokemonList pokemonList={pokemonList} />
-                    <Button onClick={() => setOffset((prev) => prev + 30)}>
-                      LOAD MORE
-                    </Button>
-                  </Container>
+                  {pokemonList.length !== 0 && !loading ? (
+                    <Container>
+                      <PokemonList pokemonList={pokemonList} />
+                      <Button onClick={() => setOffset((prev) => prev + 30)}>
+                        LOAD MORE
+                      </Button>
+                    </Container>
+                  ) : (
+                    <div className='loading-container'>
+                      <div className='spinner'></div>
+                    </div>
+                  )}
                 </>
               }></Route>
             <Route path=':id' element={<PokemonInfos />} />
