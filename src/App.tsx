@@ -100,6 +100,7 @@ function App() {
   // console.log(lastOffset.current, offset);
 
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (language === lastLanguage.current) {
@@ -107,6 +108,7 @@ function App() {
       getPokemonList(limit, offset, language).then((res) => {
         setPokemonList((prev) => [...prev, ...res]);
         setLoading(false);
+        setLoadingMore(false);
       });
       lastOffset.current = offset;
     } else {
@@ -120,6 +122,7 @@ function App() {
       ).then((res) => {
         setPokemonList(res);
         setLoading(false);
+        setLoadingMore(false);
       });
     }
   }, [offset, language]);
@@ -137,7 +140,13 @@ function App() {
                   {pokemonList.length !== 0 && !loading ? (
                     <Container>
                       <PokemonList pokemonList={pokemonList} />
-                      <Button onClick={() => setOffset((prev) => prev + 30)}>
+                      <Button
+                        disabled={loadingMore}
+                        style={{ cursor: !loadingMore ? "pointer" : "default" }}
+                        onClick={() => {
+                          setOffset((prev) => prev + 30);
+                          setLoadingMore(true);
+                        }}>
                         LOAD MORE
                       </Button>
                     </Container>
